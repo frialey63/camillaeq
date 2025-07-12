@@ -58,10 +58,6 @@ public final class CamillaAccess {
         CamillaAccess.camillaUrl = camillaUrl;
     }
 
-    private CamillaAccess() {
-        // prevent instantiation
-    }
-
     /**
      * Send a message and obtain a value in response.
      * @param message The message
@@ -148,6 +144,10 @@ public final class CamillaAccess {
         }
 
         return result.toString();
+    }
+
+    private CamillaAccess() {
+        // prevent instantiation
     }
 
 }
