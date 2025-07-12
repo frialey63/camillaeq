@@ -1,9 +1,11 @@
 package org.pjp.camillaeq;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.pjp.camillaeq.model.BiquadSettings;
-import org.pjp.camillaeq.model.camilla.Config;
 import org.pjp.camillaeq.ws.CamillaAccess;
 import org.pjp.camillaeq.yaml.Reconfigure;
 import org.slf4j.Logger;
@@ -45,6 +47,13 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
         Application.filterSettings = filterSettings;
     }
 
+    private static void backupUserConfiguration() throws IOException {
+        String configStr = Reconfigure.downloadConfig();
+        File bakFile = File.createTempFile("camillaeq-", ".bak");
+        LOGGER.info("backing-up the user configuration to file " + bakFile);
+        Files.writeString(bakFile.toPath(), configStr);
+    }
+
     @Value("${camilla.url:ws://localhost:1234}")
     private String camillaUrl;
 
@@ -62,6 +71,8 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
     public void run(String... args) throws Exception {
         LOGGER.info("camillaUrl = " + camillaUrl);
         CamillaAccess.setCamillaUrl(camillaUrl);
+
+        backupUserConfiguration();
     }
 
     /**
@@ -73,9 +84,9 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
 
         if (filterSettings != null) {
             if (!Arrays.equals(filterSettings, lastFilterSettings)) {
-                Reconfigure r = new Reconfigure();
-                Config newConfig = r.getFilterConfig(filterSettings);
-                r.reconfigure(newConfig);
+                Reconfigure r = new Reconfigure(filterSettings);
+                r.getFilterConfig();
+                r.reconfigure();
 
                 lastFilterSettings = filterSettings;
             }

@@ -26,12 +26,52 @@ public class Reconfigure {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Reconfigure.class);
 
+    public static String uploadConfig(String configStr) {
+        configStr = configStr.replaceAll("null", "~");
+        configStr = configStr.replaceAll("\n", "\\\\n");
+        return CamillaAccess.query(CamillaAccess.SET_CONFIG, configStr);
+    }
+
+    public static String downloadConfig() {
+        String result = CamillaAccess.queryForValue(CamillaAccess.GET_CONFIG);
+        result = result.replaceAll("\\\\n", System.lineSeparator());
+        return result;
+    }
+
+    private static String toString(Map<String, Object> config) {
+        DumperOptions options = new DumperOptions();
+        options.setIndent(2);
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+        Yaml yaml = new Yaml(options);
+
+        StringWriter stringWriter = new StringWriter();
+        yaml.dump(config, stringWriter);
+
+        return stringWriter.toString();
+    }
+
+    private static Map<String, Object> parseConfig(String configStr) {
+        Yaml yaml = new Yaml();
+        return yaml.load(configStr);
+    }
+
+    private final BiquadSettings[] filterSettings;
+
+    private Config newConfig;
+
+    /**
+     * @param filterSettings The array of biquad filter node settings
+     */
+    public Reconfigure(BiquadSettings[] filterSettings) {
+        super();
+        this.filterSettings = filterSettings;
+    }
+
     /**
      * Get a new CamillaDSP configuration to match a specified array of biquad filter node settings.
-     * @param filterSettings The array of biquad filter node settings
-     * @return New CamillaDSP configuration
      */
-    public Config getFilterConfig(BiquadSettings[] filterSettings) {
+    public void getFilterConfig() {
         List<Filter> filters = new ArrayList<>();
         List<PipelineStep> pipelineSteps = new ArrayList<>();
 
@@ -49,14 +89,13 @@ public class Reconfigure {
             }
         }
 
-        return new Config(filters, pipelineSteps);
+        newConfig = new Config(filters, pipelineSteps);
     }
 
     /**
      * Applies a new configuration by uploading it to the CamillaDSP.
-     * @param newConfig The new configuration for CamillaDSP
      */
-    public void reconfigure(Config newConfig) {
+    public void reconfigure() {
         String configStr = downloadConfig();
 
         Map<String, Object> config = parseConfig(configStr);
@@ -72,36 +111,6 @@ public class Reconfigure {
 
         String res = uploadConfig(configStr);
         LOGGER.debug(res);
-    }
-
-    private String uploadConfig(String configStr) {
-        configStr = configStr.replaceAll("null", "~");
-        configStr = configStr.replaceAll("\n", "\\\\n");
-        return CamillaAccess.query(CamillaAccess.SET_CONFIG, configStr);
-    }
-
-    private String toString(Map<String, Object> config) {
-        DumperOptions options = new DumperOptions();
-        options.setIndent(2);
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-
-        Yaml yaml = new Yaml(options);
-
-        StringWriter stringWriter = new StringWriter();
-        yaml.dump(config, stringWriter);
-
-        return stringWriter.toString();
-    }
-
-    private Map<String, Object> parseConfig(String configStr) {
-        Yaml yaml = new Yaml();
-        return yaml.load(configStr);
-    }
-
-    private String downloadConfig() {
-        String result = CamillaAccess.queryForValue(CamillaAccess.GET_CONFIG);
-        result = result.replaceAll("\\\\n", System.lineSeparator());
-        return result;
     }
 
 }
