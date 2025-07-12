@@ -1,6 +1,8 @@
 # camillaeq
 A graphic equaliser for [CamillaDSP](https://github.com/HEnquist/camilladsp) based on [Weq8](https://github.com/teropa/weq8)
 
+![Screenshot](Screenshot.png)
+
 When accessed on the Tomcat port (default 8080) this app provides a UI for a
 graphic equaliser (based on Weq8) which can be used to set biquad filters on the
 Camilla DSP across 8 frequency bands.
