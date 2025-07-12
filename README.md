@@ -1,6 +1,21 @@
 # camillaeq
 A graphic equaliser for CamillaDSP based on Weq8
 
+When accessed on the Tomcat port (default 8080) this app provides a UI for a
+graphic equaliser (based on Weq8) which can be used to set biquad filters on the
+Camilla DSP across 8 frequency bands.
+
+As changes are input on the equaliser,
+these are read and a new configuration is built and passed to the Camilla DSP via
+its web socket interface. This configuration is automatically made active.
+The configuration preserves the user specified "devices" section,
+the "filters" section is replaced by a set of filters representing the
+biquad settings and the "pipeline" section is edited to replace user specified filters.
+
+Probably this UI would fit more naturally within the CamillaGUI but this
+author does not have the necessary Javascript knowledge.  Until then this
+project is hopefully of interest and/or use for other Camilla DSP users.
+
 _This is work in progress but the core functionality is working_
 
 ### Release Build
@@ -18,6 +33,7 @@ Prerequisites: JDK 17, Maven 3.9.2
 ## TODO
 
 - configure the CamillaDSP host:port
+- add support for Weq8 24 filters as a pair of 12 filters in series?
 - save/load named configs
 - reset config
 
