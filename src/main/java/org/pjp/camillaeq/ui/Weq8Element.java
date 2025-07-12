@@ -48,12 +48,14 @@ public class Weq8Element extends Component implements HasSize, HasTheme {
         public FilterChangedEvent(Weq8Element source, boolean fromClient, @EventData("event.detail") JreJsonArray detailsArray) {
             super(source, fromClient);
 
-            filterSettings = new BiquadSettings[detailsArray.length()];
+            BiquadSettings[] tempSettings = new BiquadSettings[detailsArray.length()];
 
-            for (int i = 0; i < filterSettings.length; i++) {
+            for (int i = 0; i < tempSettings.length; i++) {
                 JreJsonObject v = (JreJsonObject) detailsArray.get(i);
-                filterSettings[i] = new BiquadSettings(BiquadType.parse(v.getString("type")), v.getNumber("frequency"), v.getNumber("Q"), v.getNumber("gain"), v.getBoolean("bypass"));
+                tempSettings[i] = new BiquadSettings(BiquadType.parse(v.getString("type")), v.getNumber("frequency"), v.getNumber("Q"), v.getNumber("gain"), v.getBoolean("bypass"));
             }
+
+            filterSettings = tempSettings;
         }
 
         /**

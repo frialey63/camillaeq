@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.pjp.camillaeq.model.BiquadSettings;
+import org.pjp.camillaeq.model.BiquadType;
 import org.pjp.camillaeq.model.camilla.Config;
 import org.pjp.camillaeq.model.camilla.Filter;
 import org.pjp.camillaeq.model.camilla.PipelineStep;
@@ -37,7 +38,7 @@ public class Reconfigure {
         for (int i = 0; i < filterSettings.length; i++) {
             BiquadSettings biquad = filterSettings[i];
 
-            if (biquad.type() != null) {
+            if (biquad.type() != BiquadType.NOOP) {
                 String name = String.format("Filter %d", i);
 
                 Filter filter = new Filter(name, biquad);

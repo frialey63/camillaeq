@@ -10,6 +10,11 @@ package org.pjp.camillaeq.model;
 public enum BiquadType {
 
     /**
+     * noop
+     */
+    NOOP("noop"),
+
+    /**
      * highpass
      * Standard second-order resonant highpass filter with 12dB/octave rolloff. Frequencies below the cutoff are attenuated; frequencies above it pass through.
      * Freq The cutoff frequency.
@@ -110,7 +115,8 @@ public enum BiquadType {
         case "highshelf12" -> HIGH_SHELF;
         case "lowshelf12" -> LOW_SHELF;
         case "notch12" -> NOTCH;
-        default -> null;
+        case "noop" -> NOOP;
+        default -> throw new IllegalArgumentException("cannot parse invalid biquad type " + str);
         };
     }
 }
