@@ -6,7 +6,6 @@ import { WEQ8Runtime } from "weq8";
 import "weq8/ui";
 
 // https://vaadin.com/blog/creating-a-custom-component-with-lit
-// https://lit.dev/
 // https://open-wc.org/guides/knowledge/lit-element/lifecycle/
 // https://kevinsimper.medium.com/document-queryselector-with-web-components-76a8be5bc59
 
@@ -17,7 +16,7 @@ class Weq8Element extends LitElement {
       color: white;
     }
     weq8-ui {
-      height: 600px;
+      height: 400px;
       margin: 0 auto;
     }
   `;
