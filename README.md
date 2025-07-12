@@ -10,7 +10,7 @@ Camilla DSP across 8 frequency bands.
 As changes are input on the equaliser,
 these are read and a new configuration is built and passed to the Camilla DSP via
 its web socket interface. This configuration is automatically made active.
-Each configuration preserves the user specified "devices" section,
+Each configuration preserves the user specified "devices", "mixers" and "processors" sections,
 the "filters" section is replaced by a set of filters representing the
 biquad settings and the "pipeline" section is edited to reference the filters of the equaliser.
 
@@ -34,7 +34,6 @@ Prerequisites: JDK 17, Maven 3.9.2
 
 ## TODO
 
-- configure the CamillaDSP host:port
 - add support for Weq8 24 filters as a pair of 12 filters in series?
 - save/load named configs
 - reset config
