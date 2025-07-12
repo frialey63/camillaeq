@@ -8,9 +8,9 @@ Camilla DSP across 8 frequency bands.
 As changes are input on the equaliser,
 these are read and a new configuration is built and passed to the Camilla DSP via
 its web socket interface. This configuration is automatically made active.
-The configuration preserves the user specified "devices" section,
+Each configuration preserves the user specified "devices" section,
 the "filters" section is replaced by a set of filters representing the
-biquad settings and the "pipeline" section is edited to replace user specified filters.
+biquad settings and the "pipeline" section is edited to reference the filters of the equaliser.
 
 Probably this UI would fit more naturally within the CamillaGUI but this
 author does not have the necessary Javascript knowledge.  Until then this
