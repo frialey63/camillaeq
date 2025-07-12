@@ -75,6 +75,8 @@ public class Reconfigure {
     }
 
     private String uploadConfig(String configStr) {
+        configStr = configStr.replaceAll("null", "~");
+        configStr = configStr.replaceAll("\n", "\\\\n");
         return CamillaAccess.query(CamillaAccess.SET_CONFIG, configStr);
     }
 
@@ -88,10 +90,7 @@ public class Reconfigure {
         StringWriter stringWriter = new StringWriter();
         yaml.dump(config, stringWriter);
 
-        String result = stringWriter.toString();
-        result = result.replaceAll("null", "~");
-        result = result.replaceAll("\n", "\\\\n");
-        return result;
+        return stringWriter.toString();
     }
 
     private Map<String, Object> parseConfig(String configStr) {
