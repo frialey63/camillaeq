@@ -4,7 +4,12 @@ import java.util.Arrays;
 
 import org.pjp.camillaeq.model.BiquadSettings;
 import org.pjp.camillaeq.model.camilla.Config;
+import org.pjp.camillaeq.ws.CamillaAccess;
 import org.pjp.camillaeq.yaml.Reconfigure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -24,9 +29,11 @@ import com.vaadin.flow.theme.Theme;
 @EnableScheduling
 @PWA(name = "Equaliser for CamillaDSP", shortName = "CamillaEQ")
 @Theme("my-theme")
-public class Application implements AppShellConfigurator {
+public class Application implements AppShellConfigurator, CommandLineRunner {
 
     private static final long serialVersionUID = 1L;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private static BiquadSettings[] filterSettings;
 
@@ -38,6 +45,9 @@ public class Application implements AppShellConfigurator {
         Application.filterSettings = filterSettings;
     }
 
+    @Value("${camilla.url:ws://localhost:1234}")
+    private String camillaUrl;
+
     private BiquadSettings[] lastFilterSettings;
 
     /**
@@ -46,6 +56,12 @@ public class Application implements AppShellConfigurator {
      */
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        LOGGER.info("camillaUrl = " + camillaUrl);
+        CamillaAccess.setCamillaUrl(camillaUrl);
     }
 
     /**

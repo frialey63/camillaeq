@@ -48,7 +48,15 @@ public final class CamillaAccess {
 
     private static final String NUM_VALUE = "\"value\":";
 
-    private static final String WS_URI = "ws://localhost:1234";	// TODO externalise this address
+    private static String camillaUrl;
+
+    public static String getCamillaUrl() {
+        return camillaUrl;
+    }
+
+    public static void setCamillaUrl(String camillaUrl) {
+        CamillaAccess.camillaUrl = camillaUrl;
+    }
 
     private CamillaAccess() {
         // prevent instantiation
@@ -129,7 +137,7 @@ public final class CamillaAccess {
                         LOGGER.error("", e);
                     }
                 }
-            }, cec, new URI(WS_URI));
+            }, cec, new URI(camillaUrl));
 
             if (!messageLatch.await(100, TimeUnit.SECONDS)) {
                 LOGGER.warn("wait time elapsed before latch coutdown reached zero");
