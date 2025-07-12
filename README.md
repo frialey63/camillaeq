@@ -34,9 +34,9 @@ Prerequisites: JDK 17, Maven 3.9.2
 
 ## TODO
 
-- add support for Weq8 24 filters as a pair of 12 filters in series?
+- reset user config
 - save/load named configs
-- reset config
+- add support for Weq8 24 filters as a pair of 12 filters in series?
 
 ## ISSUES
 
