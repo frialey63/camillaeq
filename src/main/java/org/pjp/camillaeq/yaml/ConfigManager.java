@@ -25,8 +25,8 @@ public class ConfigManager {
      */
     public void backup() throws IOException {
         if (file == null) {
-            LOGGER.info("backing-up the user configuration to file " + file);
             file = File.createTempFile("camillaeq-", ".bak");
+            LOGGER.info("backing-up the user configuration to file " + file);
             String configStr = Reconfigure.downloadConfig();
             Files.writeString(file.toPath(), configStr);
         }
