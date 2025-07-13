@@ -28,9 +28,34 @@ public class Weq8Element extends Component implements HasSize, HasTheme {
     private static final long serialVersionUID = 1L;
 
     /**
+     * The number of filters, fixed by the Weq8 component.
+     */
+    public static final int NUM_FILTERS = 8;
+
+    /**
+     * No operation filter in Weq8.
+     */
+    public static final BiquadSettings NOOP_FILTER = new BiquadSettings(BiquadType.NOOP, 30, 0.70, 0, false);
+
+    /**
      * Default settings for filter 0 in Weq8.
      */
     public static final BiquadSettings DEFAULT_FILTER_0 = new BiquadSettings(BiquadType.LOW_SHELF, 30, 0.70, 0, false);
+
+    /**
+     * Default settings for filter 1 in Weq8.
+     */
+    public static final BiquadSettings DEFAULT_FILTER_1 = new BiquadSettings(BiquadType.PEAKING, 200, 0.70, 0, false);
+
+    /**
+     * Default settings for filter 2 in Weq8.
+     */
+    public static final BiquadSettings DEFAULT_FILTER_2 = new BiquadSettings(BiquadType.PEAKING, 1000, 0.70, 0, false);
+
+    /**
+     * Default settings for filter 3 in Weq8.
+     */
+    public static final BiquadSettings DEFAULT_FILTER_3 = new BiquadSettings(BiquadType.HIGH_SHELF, 5000, 0.70, 0, false);
 
     /**
      * This class is the event which is emitted by the Weq8 component when a filter is changed.
@@ -87,6 +112,20 @@ public class Weq8Element extends Component implements HasSize, HasTheme {
      */
     public void removeFilterChangedListener(Registration registration) {
         registration.remove();
+    }
+
+    /**
+     * Set the biquad filter nodes to default settings.
+     */
+    public void setDefaultFilters() {
+        for (int i = 0; i < Weq8Element.NUM_FILTERS; i++) {
+            setFilter(i, Weq8Element.NOOP_FILTER);
+        }
+
+        setFilter(0, Weq8Element.DEFAULT_FILTER_0);
+        setFilter(1, Weq8Element.DEFAULT_FILTER_1);
+        setFilter(2, Weq8Element.DEFAULT_FILTER_2);
+        setFilter(3, Weq8Element.DEFAULT_FILTER_3);
     }
 
     /**

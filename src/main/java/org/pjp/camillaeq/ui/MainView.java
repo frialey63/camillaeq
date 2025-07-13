@@ -27,7 +27,11 @@ public class MainView extends VerticalLayout implements AfterNavigationObserver 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainView.class);
 
-    private Weq8Element weq8 = new Weq8Element();
+    private final PresetsManager presetsManager;
+
+    private final Weq8Element weq8 = new Weq8Element();
+
+    private final Button[] presetButton = new Button[NUM_PRESETS];
 
     private BiquadSettings[] filterSettings;
 
@@ -38,8 +42,10 @@ public class MainView extends VerticalLayout implements AfterNavigationObserver 
      *
      */
     public MainView(PresetsManager presetsManager) {
-        this.getElement().getStyle().set("background-color", "#202020");
-        this.setHeightFull();
+        this.presetsManager = presetsManager;
+
+        getElement().getStyle().set("background-color", "#202020");
+        setHeightFull();
 
         weq8.addFilterChangedListener(l -> {
             filterSettings = l.getFilterSettings();
@@ -54,21 +60,26 @@ public class MainView extends VerticalLayout implements AfterNavigationObserver 
         for (int i = 0; i < NUM_PRESETS; i++) {
             final int num = i;
 
-            Button preset = new Button(String.format("Preset #%d", i));
+            Button preset = presetButton[i] = new Button(String.format("Preset #%d", i));
             preset.getClassNames().add("my-button");
             preset.addClickListener(l -> {
                 if (l.isCtrlKey()) {
                     LOGGER.info("save.filterSettings = " + Arrays.toString(filterSettings));
                     presetsManager.save(num, filterSettings);
+                    preset.getElement().getStyle().setColor("yellow");
+                } else if (l.isAltKey()) {
+                    LOGGER.info("clear.filterSettings = " + Arrays.toString(filterSettings));
+                    presetsManager.clear(num);
+                    preset.getElement().getStyle().setColor("white");
                 } else {
                     filterSettings = presetsManager.load(num);
                     LOGGER.info("load.filterSettings = " + Arrays.toString(filterSettings));
-                    weq8.setFilters(filterSettings);
+                    if (filterSettings != null) {
+                        weq8.setFilters(filterSettings);
+                    }
                 }
             });
-            preset.addDoubleClickListener(l -> {
-            });
-            preset.setTooltipText("Control-click to save, click to load");
+            preset.setTooltipText("Ctrl-click to save, click to load, Alt-click to clear");
 
             buttons.add(preset);
         }
@@ -81,6 +92,17 @@ public class MainView extends VerticalLayout implements AfterNavigationObserver 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
         // make an initial filter setting here to generate a state event
-        weq8.setFilter(0, Weq8Element.DEFAULT_FILTER_0);
+        weq8.setDefaultFilters();
+
+        for (int i = 0; i < NUM_PRESETS; i++) {
+            final int num = i;
+
+            filterSettings = presetsManager.load(num);
+            LOGGER.info("init.filterSettings = " + Arrays.toString(filterSettings));
+            if (filterSettings != null) {
+                presetButton[i].getElement().getStyle().setColor("yellow");
+            }
+        }
     }
+
 }
