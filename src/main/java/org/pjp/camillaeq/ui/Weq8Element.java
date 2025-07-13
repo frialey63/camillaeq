@@ -28,6 +28,11 @@ public class Weq8Element extends Component implements HasSize, HasTheme {
     private static final long serialVersionUID = 1L;
 
     /**
+     * Default settings for filter 0 in Weq8.
+     */
+    public static final BiquadSettings DEFAULT_FILTER_0 = new BiquadSettings(BiquadType.LOW_SHELF, 30, 0.70, 0, false);
+
+    /**
      * This class is the event which is emitted by the Weq8 component when a filter is changed.
      * @param <T> The generic type
      */
@@ -82,6 +87,16 @@ public class Weq8Element extends Component implements HasSize, HasTheme {
      */
     public void removeFilterChangedListener(Registration registration) {
         registration.remove();
+    }
+
+    /**
+     * Sets array of biquad filter nodes on the Weq8 component.
+     * @param settings The settings array for the biquad filters
+     */
+    public void setFilters(BiquadSettings[] settings) {
+        for (int i = 0; i < settings.length; i++) {
+            setFilter(i, settings[i]);
+        }
     }
 
     /**

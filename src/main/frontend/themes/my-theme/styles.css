@@ -16,4 +16,14 @@ vaadin-text-field.bordered::part(input-field) {
   background-color: var(--lumo-base-color);
 }
 
-
+.my-button {
+  background-color: #373737;
+  color: white;
+  border-radius: 10px;
+  --font-stack: "Inter", sans-serif;
+  --font-size: 14px;
+  --font-weight: 500;
+  font-family: var(--font-stack);
+  font-size: var(--font-size);
+  font-weight: var(--font-weight);
+}
