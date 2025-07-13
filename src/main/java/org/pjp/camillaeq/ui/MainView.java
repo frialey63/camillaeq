@@ -3,8 +3,8 @@ package org.pjp.camillaeq.ui;
 import java.util.Arrays;
 
 import org.pjp.camillaeq.Application;
+import org.pjp.camillaeq.manager.PresetsManager;
 import org.pjp.camillaeq.model.BiquadSettings;
-import org.pjp.camillaeq.yaml.PresetsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

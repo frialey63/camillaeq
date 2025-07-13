@@ -2,10 +2,10 @@ package org.pjp.camillaeq;
 
 import java.util.Arrays;
 
+import org.pjp.camillaeq.manager.ConfigManager;
 import org.pjp.camillaeq.model.BiquadSettings;
 import org.pjp.camillaeq.ws.CamillaAccess;
 import org.pjp.camillaeq.yaml.Reconfigure;
-import org.pjp.camillaeq.yaml.ConfigManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

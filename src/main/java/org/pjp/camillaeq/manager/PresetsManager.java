@@ -1,4 +1,4 @@
-package org.pjp.camillaeq.yaml;
+package org.pjp.camillaeq.manager;
 
 import java.util.HashMap;
 import java.util.Map;
