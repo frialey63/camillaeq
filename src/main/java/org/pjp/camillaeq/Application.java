@@ -1,15 +1,14 @@
 package org.pjp.camillaeq;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
 
 import org.pjp.camillaeq.model.BiquadSettings;
 import org.pjp.camillaeq.ws.CamillaAccess;
 import org.pjp.camillaeq.yaml.Reconfigure;
+import org.pjp.camillaeq.yaml.ConfigManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -47,15 +46,11 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
         Application.filterSettings = filterSettings;
     }
 
-    private static void backupUserConfiguration() throws IOException {
-        String configStr = Reconfigure.downloadConfig();
-        File bakFile = File.createTempFile("camillaeq-", ".bak");
-        LOGGER.info("backing-up the user configuration to file " + bakFile);
-        Files.writeString(bakFile.toPath(), configStr);
-    }
-
     @Value("${camilla.url:ws://localhost:1234}")
     private String camillaUrl;
+
+    @Autowired
+    ConfigManager configManager;
 
     private BiquadSettings[] lastFilterSettings;
 
@@ -72,7 +67,7 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
         LOGGER.info("camillaUrl = " + camillaUrl);
         CamillaAccess.setCamillaUrl(camillaUrl);
 
-        backupUserConfiguration();
+        configManager.backup();
     }
 
     /**
