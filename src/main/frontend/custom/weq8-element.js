@@ -66,6 +66,26 @@ class Weq8Element extends LitElement {
     }
   }
 
+  setFilterType(filterNumber, type) {
+    this.runtime.setFilterType(filterNumber, type);
+  }
+
+  toggleBypass(filterNumber, bypass) {
+    this.runtime.toggleBypass(filterNumber, bypass);
+  }
+
+  setFilterFrequency(filterNumber, frequency) {
+    this.runtime.setFilterFrequency(filterNumber, frequency);
+  }
+
+  setFilterQ(filterNumber, q) {
+    this.runtime.setFilterQ(filterNumber, q);
+  }
+
+  setFilterGain(filterNumber, gain) {
+    this.runtime.setFilterGain(filterNumber, gain);
+  }
+
   render() {
     return html`
   <head>

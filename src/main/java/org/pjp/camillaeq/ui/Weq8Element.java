@@ -85,12 +85,35 @@ public class Weq8Element extends Component implements HasSize, HasTheme {
     }
 
     /**
-     * Sets the type of an indexed biquad filter node on the Weq8 component.
-     * @param index The index of the biquad filter node
-     * @param type The type of the biquad filter to set
+     * Sets an indexed biquad filter node on the Weq8 component.
+     * @param index The index of the biquad filter
+     * @param settings The settings for the biquad filter
      */
-    public void setFilterType(int index, BiquadType type) {
-        getElement().setProperty("filterIndex", index);
-        getElement().setProperty("filterType", type.toString());
+    public void setFilter(int index, BiquadSettings settings) {
+        setFilterType(index, settings.type());
+        toggleBypass(index, settings.bypass());
+        setFilterFrequency(index, settings.frequency());
+        setFilterQ(index, settings.q());
+        setFilterGain(index, settings.gain());
+    }
+
+    private void setFilterType(int index, BiquadType type) {
+        getElement().callJsFunction("setFilterType", index, type.toString());
+    }
+
+    private void toggleBypass(int index, boolean bypass) {
+        getElement().callJsFunction("toggleBypass", index, bypass);
+    }
+
+    private void setFilterFrequency(int index, double frequency) {
+        getElement().callJsFunction("setFilterFrequency", index, frequency);
+    }
+
+    private void setFilterQ(int index, double q) {
+        getElement().callJsFunction("setFilterQ", index, q);
+    }
+
+    private void setFilterGain(int index, double gain) {
+        getElement().callJsFunction("setFilterGain", index, gain);
     }
 }
