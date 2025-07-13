@@ -130,7 +130,7 @@ public final class CamillaAccess {
                         });
                         session.getBasicRemote().sendText(message);
                     } catch (IOException e) {
-                        LOGGER.error("", e);
+                        LOGGER.error("error sending text via websocket", e);
                     }
                 }
             }, cec, new URI(camillaUrl));
@@ -140,7 +140,7 @@ public final class CamillaAccess {
             }
 
         } catch (Exception e) {
-            LOGGER.error("", e);
+            LOGGER.error("error opening the websocket session", e);
         }
 
         return result.toString();
