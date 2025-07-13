@@ -34,8 +34,7 @@ Prerequisites: JDK 17, Maven 3.9.2
 
 ## TODO
 
-- reset user config
-- save/load named configs
+- persistence for the presets
 - add support for Weq8 24 filters as a pair of 12 filters in series?
 
 ## ISSUES
