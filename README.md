@@ -22,7 +22,12 @@ _This is work in progress but the core functionality is working_
 
 ### Release Build
 
-TODO
+Prerequisites: JDK 17, Maven 3.9.2
+
+    git clone <this repo>
+    cd camillaeq
+    mvn -Pproduction clean package
+    java -jar .\target\camillaeq-1.0-SNAPSHOT.jar
 
 ## Development
 
