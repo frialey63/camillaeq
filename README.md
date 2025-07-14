@@ -18,8 +18,6 @@ Probably this UI would fit more naturally within the CamillaGUI but this
 author does not have the necessary Javascript knowledge.  Until then this
 project is hopefully of interest and/or use for other Camilla DSP users.
 
-_This is work in progress but the core functionality is working_
-
 ### Release Build
 
 Prerequisites: JDK 17, Maven 3.9.2
@@ -27,7 +25,15 @@ Prerequisites: JDK 17, Maven 3.9.2
     git clone <this repo>
     cd camillaeq
     mvn -Pproduction clean package
-    java -jar .\target\camillaeq-1.0-SNAPSHOT.jar
+    java -jar .\target\camillaeq-<version>.jar
+
+To override the Tomcat port
+
+    java -jar .\target\camillaeq-<version>.jar --server.port=8080
+
+or to override the CamillaDSP websocket URL
+
+    java -jar .\target\camillaeq-<version>.jar --camilla.url=ws://localhost:1234
 
 ## Development
 
