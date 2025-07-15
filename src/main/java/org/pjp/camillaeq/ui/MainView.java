@@ -64,18 +64,24 @@ public class MainView extends VerticalLayout implements AfterNavigationObserver 
             preset.getClassNames().add("my-button");
             preset.addClickListener(l -> {
                 if (l.isCtrlKey()) {
-                    LOGGER.info("save.filterSettings = " + Arrays.toString(filterSettings));
-                    presetsManager.save(num, filterSettings);
-                    preset.getElement().getStyle().setColor("yellow");
+                    LOGGER.debug("save.filterSettings = " + Arrays.toString(filterSettings));
+                    if (filterSettings != null) {
+                        presetsManager.save(num, filterSettings);
+                        presetsManager.setActivePreset(num);
+                        preset.getElement().getStyle().setColor("yellow");
+                    }
                 } else if (l.isAltKey()) {
-                    LOGGER.info("clear.filterSettings = " + Arrays.toString(filterSettings));
+                    LOGGER.debug("clear.filterSettings");
+                    weq8.setDefaultFilters();
                     presetsManager.clear(num);
+                    presetsManager.setActivePreset(PresetsManager.NONE);
                     preset.getElement().getStyle().setColor("white");
                 } else {
-                    filterSettings = presetsManager.load(num);
-                    LOGGER.info("load.filterSettings = " + Arrays.toString(filterSettings));
+                    BiquadSettings[] filterSettings = presetsManager.load(num);
+                    LOGGER.debug("load.filterSettings = " + Arrays.toString(filterSettings));
                     if (filterSettings != null) {
-                        weq8.setFilters(filterSettings);
+                        weq8.setFilters(filterSettings);	// generates a state event which updates this.filterSettings
+                        presetsManager.setActivePreset(num);
                     }
                 }
             });
@@ -91,16 +97,22 @@ public class MainView extends VerticalLayout implements AfterNavigationObserver 
 
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        // make an initial filter setting here to generate a state event
+        // make an initial filter setting here to generate a state event which updates this.filterSettings with a value that can be preset
         weq8.setDefaultFilters();
+
+        int activePreset = presetsManager.getActivePreset();
 
         for (int i = 0; i < NUM_PRESETS; i++) {
             final int num = i;
 
             filterSettings = presetsManager.load(num);
-            LOGGER.info("init.filterSettings = " + Arrays.toString(filterSettings));
+            LOGGER.debug("init.filterSettings = " + Arrays.toString(filterSettings));
             if (filterSettings != null) {
                 presetButton[i].getElement().getStyle().setColor("yellow");
+
+                if (num == activePreset) {
+                    weq8.setFilters(filterSettings);
+                }
             }
         }
     }

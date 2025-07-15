@@ -29,4 +29,5 @@ replay_pid*
 /.project
 /package-lock.json
 /vite.generated.ts
-/camillaeq-presets.ser
+/camillaeq-active-preset.txt
+/camillaeq-filter-presets.ser

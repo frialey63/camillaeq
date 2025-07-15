@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PresetsManager {
+
+    /**
+     * Indicates that no preset is active.
+     */
+    public static final int NONE = -1;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PresetsManager.class);
 
@@ -44,7 +50,9 @@ public class PresetsManager {
         return result;
     }
 
-    private File file = new File("camillaeq-presets.ser");
+    private File serFile = new File("camillaeq-filter-presets.ser");
+
+    private File txtFile = new File("camillaeq-active-preset.txt");
 
     /**
      * Save filter preset.
@@ -53,11 +61,11 @@ public class PresetsManager {
      * @param filterSettings The biquad filter settings
      */
     public void save(int presetNumber, BiquadSettings[] filterSettings) {
-        Map<Integer, BiquadSettings[]> map = readMap(file);
+        Map<Integer, BiquadSettings[]> map = readMap(serFile);
 
         map.put(presetNumber, filterSettings);
 
-        writeMap(file, map);
+        writeMap(serFile, map);
     }
 
     /**
@@ -67,7 +75,7 @@ public class PresetsManager {
      * @return The biquad filter settings
      */
     public BiquadSettings[] load(int presetNumber) {
-        Map<Integer, BiquadSettings[]> map = readMap(file);
+        Map<Integer, BiquadSettings[]> map = readMap(serFile);
 
         return map.get(presetNumber);
     }
@@ -78,11 +86,38 @@ public class PresetsManager {
      * @param presetNumber The number of the preset
      */
     public void clear(int presetNumber) {
-        Map<Integer, BiquadSettings[]> map = readMap(file);
+        Map<Integer, BiquadSettings[]> map = readMap(serFile);
 
         map.remove(presetNumber);
 
-        writeMap(file, map);
+        writeMap(serFile, map);
     }
 
+    /**
+     * Set the active preset (number).
+     * @param num Preset number
+     */
+    public void setActivePreset(int num) {
+        try {
+            Files.writeString(txtFile.toPath(), Integer.toString(num));
+        } catch (IOException e) {
+            LOGGER.error("failed to set active preset number to file", e);
+        }
+    }
+
+    /**
+     * Get the active preset (number).
+     * @return Preset number or NONE
+     */
+    public int getActivePreset() {
+        int result = NONE;
+
+        try {
+            result = Integer.parseInt(Files.readString(txtFile.toPath()));
+        } catch (IOException e) {
+            LOGGER.debug("failed to get active preset number from file", e);
+        }
+
+        return result;
+    }
 }
