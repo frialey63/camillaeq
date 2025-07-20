@@ -18,6 +18,8 @@ Probably this UI would fit more naturally within the CamillaGUI but this
 author does not have the necessary Javascript knowledge.  Until then this
 project is hopefully of interest and/or use for other Camilla DSP users.
 
+_Version 1.0.x of CamillaEQ has been tested against CamillaDSP version 3.0.1 running on Windows 11._
+
 ### Release Build
 
 Prerequisites: JDK 17, Maven 3.9.2

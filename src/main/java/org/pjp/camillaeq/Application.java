@@ -36,6 +36,10 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
+    private static int getMajorVersion(String version) {
+        return Integer.parseInt(version.substring(0, version.indexOf('.')));
+    }
+
     private static BiquadSettings[] filterSettings;
 
     public static synchronized BiquadSettings[] getFilterSettings() {
@@ -48,6 +52,9 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
 
     @Value("${camilla.url:ws://localhost:1234}")
     private String camillaUrl;
+
+    @Value("${camilla.version:3}")
+    private int camillaVersion;
 
     @Autowired
     ConfigManager configManager;
@@ -66,6 +73,13 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
     public void run(String... args) throws Exception {
         LOGGER.info("camillaUrl = " + camillaUrl);
         CamillaAccess.setCamillaUrl(camillaUrl);
+
+        String version = CamillaAccess.queryForValue(CamillaAccess.GET_VERSION);
+        LOGGER.info("CamillaDSP version = " + version);
+
+        if (getMajorVersion(version) != camillaVersion) {
+            LOGGER.warn("Expected CamillaDSP version " + camillaVersion + ", this app may not work!");
+        }
 
         configManager.backup();
     }
