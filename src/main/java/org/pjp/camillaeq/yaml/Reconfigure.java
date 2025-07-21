@@ -26,6 +26,10 @@ public class Reconfigure {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Reconfigure.class);
 
+    private static boolean ok(String str) {
+        return str.contains("\"Ok\"");
+    }
+
     public static String uploadConfig(String configStr) {
         configStr = configStr.replaceAll("null", "~");
         configStr = configStr.replaceAll("\n", "\\\\n");
@@ -95,22 +99,30 @@ public class Reconfigure {
     /**
      * Applies a new configuration by uploading it to the CamillaDSP.
      */
-    public void reconfigure() {
+    public boolean reconfigure() {
         String configStr = downloadConfig();
 
         Map<String, Object> config = parseConfig(configStr);
 
-        @SuppressWarnings("unchecked")
-        List<Map<String, Object>> pipeline = (List<Map<String, Object>>) config.get(Config.PIPELINE);
+        if (config != null) {
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> pipeline = (List<Map<String, Object>>) config.get(Config.PIPELINE);
 
-        // replace filters and pipeline in the config
-        config.put(Config.FILTERS, newConfig.getFilters());
-        config.put(Config.PIPELINE, newConfig.getPipeline(pipeline));
+            // replace filters and pipeline in the config
+            config.put(Config.FILTERS, newConfig.getFilters());
+            config.put(Config.PIPELINE, newConfig.getPipeline(pipeline));
 
-        configStr = toString(config);
+            configStr = toString(config);
 
-        String res = uploadConfig(configStr);
-        LOGGER.debug(res);
+            String res = uploadConfig(configStr);
+            LOGGER.debug(res);
+
+            return ok(res);
+        } else {
+            LOGGER.warn("No config received from CamillaDSP, check DAC is switched-on and apply config.");
+        }
+
+        return false;
     }
 
 }

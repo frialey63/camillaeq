@@ -95,9 +95,10 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
             if (!Arrays.equals(filterSettings, lastFilterSettings)) {
                 Reconfigure r = new Reconfigure(filterSettings);
                 r.getFilterConfig();
-                r.reconfigure();
 
-                lastFilterSettings = filterSettings;
+                if (r.reconfigure()) {
+                    lastFilterSettings = filterSettings;
+                }
             }
         }
     }
