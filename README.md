@@ -18,12 +18,6 @@ Probably this UI would fit more naturally within the CamillaGUI but this
 author does not have the necessary Javascript knowledge.  Until then this
 project is hopefully of interest and/or use for other Camilla DSP users.
 
-## Status
-
-Version 1.0.x of CamillaEQ has been successfully tested against CamillaDSP version 3.0.1 both running on Windows 11.
-
-Currently not working against CamillaDSP 3.0.0 both on `Linux pi 6.6.51+rpt-rpi-v8 #1 SMP PREEMPT Debian 1:6.6.51-1+rpt3 (2024-10-08) aarch64 GNU/Linux`
-
 ## Release Build
 
 Prerequisites: JDK 17, Maven 3.9.2
@@ -49,14 +43,20 @@ Prerequisites: JDK 17, Maven 3.9.2
     cd camillaeq
     mvn spring-boot:run
 
+## STATUS
+
+### CamillaEq Version 1.0.x
+
+- successfully tested against CamillaDSP version 3.0.1 both running on Windows 11
+- successfully tested against CamillaDSP version 3.0.0 both running on Linux pi 6.6.51
+
 ## TODO
 
-- investigate and fix operation on Linux pi
 - add support for Weq8 24 filters as a pair of 12 filters in series?
 
 ## ISSUES
 
-### WEQ8
+### Weq8
 
 - filter drop down: Add+ and dark stylng
 - redraw missing for plot when resized
@@ -65,6 +65,6 @@ Prerequisites: JDK 17, Maven 3.9.2
 - option to relocate the controls above/below
 - config file for number of biquad, types for selection
 
-### CAMILLADSP
+### CamillaDSP
 
 - "names" in config for the Filter pipeline step
