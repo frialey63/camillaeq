@@ -67,4 +67,4 @@ Prerequisites: JDK 17, Maven 3.9.2
 
 ### CamillaDSP
 
-- "names" in config for the Filter pipeline step
+- N/A
