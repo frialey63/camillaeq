@@ -7,7 +7,7 @@
     <groupId>org.pjp</groupId>
     <artifactId>camillaeq</artifactId>
     <name>Equaliser for Camilla</name>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
 
     <properties>
