@@ -36,6 +36,8 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
+    private static final boolean STEP_PER_FILTER = false;
+
     private static int getMajorVersion(String version) {
         return Integer.parseInt(version.substring(0, version.indexOf('.')));
     }
@@ -99,7 +101,7 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
         if (filterSettings != null) {
             if (!Arrays.equals(filterSettings, lastFilterSettings)) {
                 Reconfigure r = new Reconfigure(filterSettings);
-                r.getFilterConfig();
+                r.getFilterConfig(STEP_PER_FILTER);
 
                 if (r.reconfigure()) {
                     lastFilterSettings = filterSettings;

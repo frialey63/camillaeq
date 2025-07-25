@@ -74,10 +74,13 @@ public class Reconfigure {
 
     /**
      * Get a new CamillaDSP configuration to match a specified array of biquad filter node settings.
+     * @param stepPerFilter If true then use a separate pipeline step for each filter
      */
-    public void getFilterConfig() {
+    public void getFilterConfig(boolean stepPerFilter) {
         List<Filter> filters = new ArrayList<>();
         List<PipelineStep> pipelineSteps = new ArrayList<>();
+
+        List<String> filterNames = new ArrayList<>();
 
         for (int i = 0; i < filterSettings.length; i++) {
             BiquadSettings biquad = filterSettings[i];
@@ -85,12 +88,20 @@ public class Reconfigure {
             if (biquad.type() != BiquadType.NOOP) {
                 String name = String.format("Filter %d", i);
 
-                Filter filter = new Filter(name, biquad);
-                filters.add(filter);
+                filters.add(new Filter(name, biquad));
 
-                PipelineStep step = new PipelineStep(PipelineStepType.FILTER, PipelineStep.ALL_CHANNELS, name, "~", biquad.bypass());
-                pipelineSteps.add(step);
+                if (stepPerFilter) {
+                    pipelineSteps.add(new PipelineStep(PipelineStepType.FILTER, PipelineStep.ALL_CHANNELS, name, "~", biquad.bypass()));
+                } else {
+                    if (!biquad.bypass()) {
+                        filterNames.add(name);
+                    }
+                }
             }
+        }
+
+        if (!stepPerFilter) {
+            pipelineSteps.add(new PipelineStep(PipelineStepType.FILTER, PipelineStep.ALL_CHANNELS, filterNames, "~", false));
         }
 
         newConfig = new Config(filters, pipelineSteps);
