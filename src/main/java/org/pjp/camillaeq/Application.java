@@ -56,6 +56,9 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
     @Value("${camilla.version:3}")
     private int camillaVersion;
 
+    @Value("${config.backup:false}")
+    private boolean configBackup;
+
     @Autowired
     ConfigManager configManager;
 
@@ -81,7 +84,9 @@ public class Application implements AppShellConfigurator, CommandLineRunner {
             LOGGER.warn("Expected CamillaDSP version " + camillaVersion + ", this app may not work!");
         }
 
-        configManager.backup();
+        if (configBackup) {
+            configManager.backup();
+        }
     }
 
     /**
