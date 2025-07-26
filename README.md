@@ -63,7 +63,7 @@ Prerequisites: JDK 17, Maven 3.9.2
 - get/set state
 - grid labelling for the graph
 - option to relocate the controls above/below
-- config file for number of biquad, types for selection
+- config file for number of biquad, types for selection?
 
 ### CamillaDSP
 
