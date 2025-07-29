@@ -58,12 +58,13 @@ Prerequisites: JDK 17, Maven 3.9.2
 
 ### Weq8
 
-- filter drop down: Add+ and dark stylng
-- redraw missing for plot when resized
-- get/set state
-- grid labelling for the graph
-- option to relocate the controls above/below
-- config file for number of biquad, types for selection?
+[Missing / incorrect redraw for frequency response plot](https://github.com/teropa/weq8/issues/5)
+
+[Improvements for the filter type selection drop-down](https://github.com/teropa/weq8/issues/6)
+
+[Graphic Enhancements for Component](https://github.com/teropa/weq8/issues/7)
+
+[API Enhancements for the Component](https://github.com/teropa/weq8/issues/8)
 
 ### CamillaDSP
 
